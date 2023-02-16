@@ -7,21 +7,21 @@
 	$firstName = "";
 	$lastName = "";
 
-	$conn = new mysqli("134.209.161.200", "EventApp", "COP4710", "COP4710"); 	
+	$conn = new mysqli("localhost", "EventApp", "COP4710", "COP4710"); 	
 	if( $conn->connect_error )
 	{
 		returnWithError( $conn->connect_error );
 	}
 	else
 	{
-		$stmt = $conn->prepare("SELECT UID,FirstName,LastName, FROM Users WHERE Email=? AND Password =?");
+		$stmt = $conn->prepare("SELECT UID, FirstName, LastName FROM Users WHERE Email=? AND Password =?");
 		$stmt->bind_param("ss", $inData["email"], $inData["password"]);
 		$stmt->execute();
 		$result = $stmt->get_result();
 
 		if( $row = $result->fetch_assoc()  )
 		{
-			returnWithInfo( $row['UID'], $row['FirstName'], $row['LastName']);
+			returnWithInfo($row['FirstName'], $row['LastName'], $row['UID']);
 		}
 		else
 		{
@@ -34,7 +34,9 @@
 	
 	function getRequestInfo()
 	{
-		return json_decode(file_get_contents('php://input'), true);
+		$datajason = json_decode(file_get_contents('php://input'), true);
+		echo "I'm here"
+		return $datajason;
 	}
 
 	function sendResultInfoAsJson( $obj )
