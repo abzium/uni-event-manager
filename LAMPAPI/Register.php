@@ -14,7 +14,7 @@
 	{
 		$stmt = $conn->prepare("SELECT * FROM Users WHERE username=?");
 		$stmt->bind_param("s", $username);
-        $stmt->execute()
+        $stmt->execute();
 
 		$result = $stmt->get_result();
 		if ($row = $result->fetch_assoc())
@@ -37,7 +37,7 @@
 
 			if ($row2 = $result2->fetch_assoc())
             {
-                returnWithInfo($row2['UID'] $row2['username'], $row2['email']);
+                returnWithInfo($row2['UID'], $row2['username'], $row2['email']);
             }
 
             else
