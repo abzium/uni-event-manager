@@ -2,10 +2,6 @@
 
 	$inData = getRequestInfo();
 	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
-
 	$conn = new mysqli("localhost", "EventApp", "COP4710", "COP4710"); 	
 	if( $conn->connect_error )
 	{
@@ -13,18 +9,40 @@
 	}
 	else
 	{
-		$stmt = $conn->prepare("SELECT UID, FirstName, LastName FROM Users WHERE Email=? AND Password =?");
-		$stmt->bind_param("ss", $inData["email"], $inData["password"]);
-		$stmt->execute();
-		$result = $stmt->get_result();
+		$stmt = $conn->prepare("SELECT * FROM Users WHERE username=?");
+		$stmt->bind_param("s", $login);
+        $stmt->execute()
 
-		if( $row = $result->fetch_assoc()  )
-		{
-			returnWithInfo($row['FirstName'], $row['LastName'], $row['UID']);
-		}
+		$result = $stmt->get_result();
+		if ($row = $result->fetch_assoc())
+        {
+            returnWithError("Username already in use");
+        }
+
 		else
 		{
-			returnWithError("No Records Found");
+			$stmt2 = $conn->prepare("INSERT INTO Users (username, email, password) VALUES (?,?,?)");
+            $stmt2->bind_param("sss", $username, $email, $password);
+            $stmt2->execute();
+            $stmt2->close();
+
+			$stmt3 = $conn->prepare("SELECT * FROM Users WHERE username=?");
+            $stmt3->bind_param("s", $login);
+            $stmt3->execute();
+
+			$result2 = $stmt3->get_result();
+
+			if ($row2 = $result2->fetch_assoc())
+            {
+                returnWithInfo($row2['UID'] $row2['username'], $row2['email']);
+            }
+
+            else
+            {
+                returnWithError("Error");
+            }
+
+            $stmt3->close();
 		}
 
 		$stmt->close();
@@ -33,9 +51,7 @@
 	
 	function getRequestInfo()
 	{
-		$datajason = json_decode(file_get_contents('php://input'), true);
-		echo "I'm here"
-		return $datajason;
+		return json_decode(file_get_contents('php://input'), true);
 	}
 
 	function sendResultInfoAsJson( $obj )
@@ -46,13 +62,13 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+		$retValue = '{"UID":0,"username":"","email":"","error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo( $firstName, $lastName, $id )
+	function returnWithInfo( $id, $username, $email )
 	{
-		$retValue = '{"UID":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+		$retValue = '{"UID":' . $id . ',"username":"' . $username . '","email":"' . $email . '","error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
