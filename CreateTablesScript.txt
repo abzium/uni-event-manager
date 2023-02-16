@@ -5,14 +5,22 @@ USE COP4710;
 CREATE TABLE `COP4710`.`Users` 
 (
     `UID` INT NOT NULL AUTO_INCREMENT ,
-    `FirstName` VARCHAR(50) NOT NULL DEFAULT '' ,
-    `LastName` VARCHAR(50) NOT NULL DEFAULT '' ,
-    `Email` VARCHAR(50) NOT NULL DEFAULT '' ,
-    `Password` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `username` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `email` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `password` VARCHAR(50) NOT NULL DEFAULT '' ,
     PRIMARY KEY (`UID`)
 ) ENGINE = InnoDB;
 
-INSERT INTO Users (FirstName,LastName,Email,Password) VALUES ('Abdul','Muiz','amuiz@knights.ucf.edu','pass123');
+ALTER TABLE Users
+ADD UNIQUE (username);
+
+ALTER TABLE Users
+ADD UNIQUE (email);
+
+INSERT INTO Users (username,email,password) VALUES ('Abdul','amuiz@knights.ucf.edu','pass123');
+INSERT INTO Users (username,email,password) VALUES ('Sam70','shill@knights.ucf.edu','passweird');
 
 CREATE USER 'EventApp' IDENTIFIED BY 'COP4710';
 GRANT ALL PRIVILEGES ON COP4710.* TO 'EventApp'@'%';
+
+
