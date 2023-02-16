@@ -1,15 +1,15 @@
-const urlBase = 'http://COP4331-5.com/LAMPAPI';
+const urlBase = 'http://134.209.161.200/LAMPAPI';
 const extension = 'php';
 
 let userId = 0;
-let firstName = "";
-let lastName = "";
+let username = "";
+let email = "";
 
 function doLogin()
 {
 	userId = 0;
-	firstName = "";
-	lastName = "";
+	username = "";
+	email = "";
 	
 	let login = document.getElementById("loginName").value;
 	let password = document.getElementById("loginPassword").value;
@@ -17,7 +17,7 @@ function doLogin()
 	
 	document.getElementById("loginResult").innerHTML = "";
 
-	let tmp = {login:login,password:password};
+	let tmp = {username:login,password:password};
 //	var tmp = {login:login,password:hash};
 	let jsonPayload = JSON.stringify( tmp );
 	
@@ -33,7 +33,7 @@ function doLogin()
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
-				userId = jsonObject.id;
+				userId = jsonObject.UID;
 		
 				if( userId < 1 )
 				{		
@@ -41,8 +41,8 @@ function doLogin()
 					return;
 				}
 		
-				firstName = jsonObject.firstName;
-				lastName = jsonObject.lastName;
+				username = jsonObject.username;
+				email = jsonObject.email;
 
 				saveCookie();
 	
@@ -63,7 +63,7 @@ function saveCookie()
 	let minutes = 20;
 	let date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
+	document.cookie = "username=" + username + ",email=" + email + ",userId=" + userId + ";expires=" + date.toGMTString();
 }
 
 function readCookie()
