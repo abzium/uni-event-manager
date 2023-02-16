@@ -13,3 +13,6 @@ CREATE TABLE `COP4710`.`Users`
 ) ENGINE = InnoDB;
 
 INSERT INTO Users (FirstName,LastName,Email,Password) VALUES ('Abdul','Muiz','amuiz@knights.ucf.edu','pass123');
+
+CREATE USER 'EventApp' IDENTIFIED BY 'COP4710';
+GRANT ALL PRIVILEGES ON COP4710.* TO 'EventApp'@'%';
