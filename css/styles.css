@@ -6,7 +6,7 @@ body
 #title 
 {
     font-size: 40px;
-    width: 100%;
+    /*width: 100%;*/
     margin: 2% 5%;
     text-align: center;
     font-family: 'Ubuntu', sans-serif;
@@ -16,8 +16,17 @@ body
 #loginDiv
 {
     font-size: 30px;
-    width: 70%;
-    margin-left: 15%;
+    width: 50%;
+    margin: auto;
+    padding: 25px;
+    background-color: #b2b2b2;
+}
+
+#registerDiv
+{
+    font-size: 30px;
+    width: 50%;
+    margin: auto;
     padding: 25px;
     background-color: #b2b2b2;
 }
@@ -57,12 +66,24 @@ body
 
 #loginName
 {
-	font-size: 30px;
+	font-size: 24px;
 }
 #loginPassword
 {
-	font-size: 30px;
+	font-size: 24px;
 }
+#registerName {
+    font-size: 24px;
+}
+#registerEmail
+{
+	font-size: 24px;
+}
+#registerPassword
+{
+	font-size: 24px;
+}
+
 #searchText
 {
 	font-size: 30px;
@@ -73,10 +94,8 @@ body
 }
 
 input[type="text"],input[type="password"]{
-    border-radius: 25px;
-    text-align: center;
-    width: 80%;
-    margin-left: 10%;
+    
+    width: 100%;
     margin-bottom: 2%;
     font-family: 'Ubuntu', sans-serif;
 }
@@ -137,4 +156,10 @@ select{
     margin-bottom: 1%;
     font-family: 'Ubuntu', sans-serif;
     color: #95060a;
+}
+
+label
+{
+    font-size: 20px;
+    font-family: 'Ubuntu', sans-serif;
 }

@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>COP 4331 LAMP Stack Demo</title>
+	<title>University Event Manager</title>
 	<script type="text/javascript" src="js/md5.js"></script>
 	<script type="text/javascript" src="js/code.js"></script>
     <link href="css/styles.css" rel="stylesheet">	
@@ -8,15 +8,28 @@
 </head>
 <body>
 
-<h1 id="title">COP 4331 LAMP Stack Demo</h1>
+<h1 id="title">University Event Manager</h1>
 
-<div id="loginDiv">
-	<span id="inner-title">PLEASE LOG IN</span>
+<form id="loginDiv">
+	<span id="inner-title">Log in to your account</span>
+	<label for="loginName">Username:</label>
 	<input type="text" id="loginName" placeholder="Username" /><br />
+	<label for="loginPassword">Password:</label>
 	<input type="password" id="loginPassword" placeholder="Password"/><br />
-	<button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Do It </button>
+	<button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Log in </button>
 	<span id="loginResult"></span>
-</div>
+</form>
+
+<form id="registerDiv">
+	<span id="inner-title">Register for a new account</span>
+	<label for="registerName">Username:</label>
+	<input type="text" id="registerName" placeholder="Username" /><br />
+	<label for="registerEmail">Email:</label>
+	<input type="text" id="registerEmail" placeholder="yourname@university.edu" /><br />
+	<label for="registerPassword">Password:</label>
+	<input type="password" id="registerPassword" placeholder="Password"/><br />
+	<button type="button" id="registerButton" class="buttons"> Register </button>
+</form>
 
 </body>
 </html>
