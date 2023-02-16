@@ -1,12 +1,7 @@
-
 <?php
 
 	$inData = getRequestInfo();
 	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
-
 	$conn = new mysqli("localhost", "EventApp", "COP4710", "COP4710"); 	
 	if( $conn->connect_error )
 	{
@@ -14,14 +9,14 @@
 	}
 	else
 	{
-		$stmt = $conn->prepare("SELECT UID, FirstName, LastName FROM Users WHERE Email=? AND Password =?");
-		$stmt->bind_param("ss", $inData["email"], $inData["password"]);
+		$stmt = $conn->prepare("SELECT UID, username, email FROM Users WHERE username=? AND password=?");
+		$stmt->bind_param("ss", $inData["username"], $inData["password"]);
 		$stmt->execute();
 		$result = $stmt->get_result();
 
 		if( $row = $result->fetch_assoc()  )
 		{
-			returnWithInfo($row['FirstName'], $row['LastName'], $row['UID']);
+			returnWithInfo($row['UID'], $row['username'], $row['email']);
 		}
 		else
 		{
@@ -34,9 +29,7 @@
 	
 	function getRequestInfo()
 	{
-		$datajason = json_decode(file_get_contents('php://input'), true);
-		echo "I'm here"
-		return $datajason;
+		return json_decode(file_get_contents('php://input'), true);
 	}
 
 	function sendResultInfoAsJson( $obj )
@@ -47,13 +40,13 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+		$retValue = '{"UID":0,"username":"","email":"","error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo( $firstName, $lastName, $id )
+	function returnWithInfo( $id, $username, $email )
 	{
-		$retValue = '{"UID":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+		$retValue = '{"UID":' . $id . ',"username":"' . $username . '","email":"' . $email . '","error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
