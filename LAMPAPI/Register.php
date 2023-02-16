@@ -1,7 +1,10 @@
 <?php
 
 	$inData = getRequestInfo();
-	
+	$username = $inData["username"];
+	$email = $inData["email"];
+	$password = $inData["password"];
+
 	$conn = new mysqli("localhost", "EventApp", "COP4710", "COP4710"); 	
 	if( $conn->connect_error )
 	{
@@ -10,7 +13,7 @@
 	else
 	{
 		$stmt = $conn->prepare("SELECT * FROM Users WHERE username=?");
-		$stmt->bind_param("s", $login);
+		$stmt->bind_param("s", $username);
         $stmt->execute()
 
 		$result = $stmt->get_result();
@@ -27,7 +30,7 @@
             $stmt2->close();
 
 			$stmt3 = $conn->prepare("SELECT * FROM Users WHERE username=?");
-            $stmt3->bind_param("s", $login);
+            $stmt3->bind_param("s", $username);
             $stmt3->execute();
 
 			$result2 = $stmt3->get_result();
