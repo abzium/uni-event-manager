@@ -58,6 +58,52 @@ function doLogin()
 
 }
 
+function doRegister() 
+{
+	let username = document.getElementById("registerName").value;
+	let email = document.getElementById("registerEmail").value;
+	let password = document.getElementById("registerPassword").value;
+
+	let tmp = {username:username,email:email,password:password};
+	let jsonPayload = json.stringify(tmp);
+
+	let url = urlBase + '/Register.' + extension;
+	
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				let jsonObject = JSON.parse( xhr.responseText );
+				userId = jsonObject.UID;
+		
+				if( userId < 1 )
+				{		
+					document.getElementById("loginResult").innerHTML = "Username already in use";
+					return;
+				}
+		
+				username = jsonObject.username;
+				email = jsonObject.email;
+
+				saveCookie();
+	
+				window.location.href = "color.html";
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("loginResult").innerHTML = err.message;
+	}
+
+}
 function saveCookie()
 {
 	let minutes = 20;
