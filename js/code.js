@@ -65,7 +65,7 @@ function doRegister()
 	let password = document.getElementById("registerPassword").value;
 
 	let tmp = {username:username,email:email,password:password};
-	let jsonPayload = json.stringify(tmp);
+	let jsonPayload = JSON.stringify(tmp);
 
 	let url = urlBase + '/Register.' + extension;
 	
