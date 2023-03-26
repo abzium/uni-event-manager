@@ -1,26 +1,163 @@
 CREATE DATABASE COP4710;
 USE COP4710;
 
-# Create Users Table
 CREATE TABLE `COP4710`.`Users` 
 (
-    `UID` INT NOT NULL AUTO_INCREMENT ,
-    `username` VARCHAR(50) NOT NULL DEFAULT '' ,
-    `email` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `userID` INT NOT NULL AUTO_INCREMENT ,
+    `firstName` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `lastName` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `email` VARCHAR(50) NOT NULL UNIQUE DEFAULT '',
     `password` VARCHAR(50) NOT NULL DEFAULT '' ,
-    PRIMARY KEY (`UID`)
+    `userLevel` INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (`userID`)
 ) ENGINE = InnoDB;
 
-ALTER TABLE Users
-ADD UNIQUE (username);
+CREATE TABLE `COP4710`.`Universities` 
+(
+    `uniID` INT NOT NULL AUTO_INCREMENT ,
+    `name` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `description` VARCHAR(255) NOT NULL DEFAULT '' ,
+    `domain` VARCHAR(50) NOT NULL UNIQUE DEFAULT '',
+    `numStudents` INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (`uniID`)
+) ENGINE = InnoDB;
 
-ALTER TABLE Users
-ADD UNIQUE (email);
+CREATE TABLE `COP4710`.`Location` 
+(
+    `locID` INT NOT NULL AUTO_INCREMENT ,
+    `name` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `latitude` REAL NOT NULL ,
+    `longitude` REAL NOT NULL ,
+    PRIMARY KEY (`locID`)
+) ENGINE = InnoDB;
 
-INSERT INTO Users (username,email,password) VALUES ('Abdul','amuiz@knights.ucf.edu','pass123');
-INSERT INTO Users (username,email,password) VALUES ('Sam70','shill@knights.ucf.edu','passweird');
+CREATE TABLE `COP4710`.`RSOs` 
+(
+    `rsoID` INT NOT NULL AUTO_INCREMENT ,
+    `adminID` INT NOT NULL ,
+    `name` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `status` VARCHAR(10) NOT NULL DEFAULT 'inactive',
+    `domain` VARCHAR(20) NOT NULL,
+    PRIMARY KEY (`rsoID`),
+    FOREIGN KEY (`adminID`)
+        REFERENCES Users(`userID`)
+        ON DELETE CASCADE
+) ENGINE = InnoDB;
 
-CREATE USER 'EventApp' IDENTIFIED BY 'COP4710';
-GRANT ALL PRIVILEGES ON COP4710.* TO 'EventApp'@'%';
+CREATE TABLE `COP4710`.`RSO_Students` 
+(
+    `rsoID` INT NOT NULL ,
+    `userID` INT NOT NULL ,
+    FOREIGN KEY (`rsoID`)
+        REFERENCES RSOs (rsoID)
+        ON DELETE CASCADE,
+    FOREIGN KEY (`userID`)
+        REFERENCES Users(`userID`)
+        ON DELETE CASCADE
+) ENGINE = InnoDB;
+
+CREATE TRIGGER JoinRSO
+AFTER INSERT ON RSO_Students FOR EACH ROW 
+UPDATE RSOs
+SET status = IF ((SELECT COUNT(*) FROM RSO_Students M WHERE M.rsoID = NEW.rsoID) > 4, 'active', 'inactive')
+WHERE rsoID = NEW.rsoID;
+
+CREATE TRIGGER LeaveRSO
+AFTER DELETE ON RSO_Students FOR EACH ROW 
+UPDATE RSOs
+SET status = IF ((SELECT COUNT(*) FROM RSO_Students M WHERE M.rsoID = OLD.rsoID) < 5, 'inactive', 'active')
+WHERE rsoID = OLD.rsoID;
+
+CREATE TABLE `COP4710`.`Events` 
+(
+    `eventID` INT NOT NULL AUTO_INCREMENT ,
+    `name` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `category` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `description` VARCHAR(255) NOT NULL DEFAULT '',
+    `contactPhone` VARCHAR(20) NOT NULL DEFAULT '',
+    `contactEmail` VARCHAR(50) NOT NULL DEFAULT '',
+    `timestamp` DATETIME,
+    `locID` INT,
+    PRIMARY KEY (`eventID`),
+    FOREIGN KEY (`locID`) REFERENCES Location (locID)
+) ENGINE = InnoDB;
+
+CREATE TABLE `COP4710`.`RSO_Events` 
+(
+    `eventID` INT NOT NULL,
+    `rsoID` INT NOT NULL ,
+    FOREIGN KEY (`eventID`)
+        REFERENCES Events(`eventID`)
+        ON DELETE CASCADE,
+    FOREIGN KEY (`rsoID`)
+        REFERENCES RSOs (rsoID)
+        ON DELETE CASCADE
+) ENGINE = InnoDB;
+
+CREATE TABLE `COP4710`.`Private_Events` 
+(
+    `eventID` INT NOT NULL,
+    `adminID` INT NOT NULL ,
+    `uniID` INT NOT NULL,
+    FOREIGN KEY (`eventID`)
+        REFERENCES Events(`eventID`)
+        ON DELETE CASCADE,
+    FOREIGN KEY (`adminID`)
+        REFERENCES Users (userID)
+        ON DELETE CASCADE,
+    FOREIGN KEY (`uniID`)
+        REFERENCES Universities (uniID)
+        ON DELETE CASCADE
+) ENGINE = InnoDB;
+
+CREATE TABLE `COP4710`.`Public_Events` 
+(
+    `eventID` INT NOT NULL,
+    `adminID` INT NOT NULL ,
+    `approval` VARCHAR(20) NOT NULL DEFAULT 'pending',
+    FOREIGN KEY (`eventID`)
+        REFERENCES Events(`eventID`)
+        ON DELETE CASCADE,
+    FOREIGN KEY (`adminID`)
+        REFERENCES Users (userID)
+        ON DELETE CASCADE
+) ENGINE = InnoDB;
+
+CREATE TABLE `COP4710`.`Pictures` 
+(
+    `picID` INT NOT NULL AUTO_INCREMENT,
+    `url` VARCHAR(255) NOT NULL ,
+    `uniID` INT NOT NULL,
+    PRIMARY KEY (`picID`),
+    FOREIGN KEY (`uniID`)
+        REFERENCES Universities(`uniID`)
+        ON DELETE CASCADE
+) ENGINE = InnoDB;
+
+
+CREATE TABLE `COP4710`.`Comments` 
+(
+    `eventID` INT NOT NULL,
+    `userID` INT NOT NULL,
+    `content` VARCHAR(255),
+    `rating` INT,
+    `timestamp` timestamp DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`eventID`)
+        REFERENCES Events(`eventID`)
+        ON DELETE CASCADE,
+    FOREIGN KEY (`userID`)
+        REFERENCES Users(`userID`)
+        ON DELETE CASCADE
+) ENGINE = InnoDB;
+
+
+
+
+
+
+
+
+
+
 
 
