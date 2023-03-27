@@ -1,7 +1,8 @@
 <?php
 
 	$inData = getRequestInfo();
-	$username = $inData["username"];
+	$firstName = $inData["firstName"];
+	$lastName = $inData["lastName"];
 	$email = $inData["email"];
 	$password = $inData["password"];
 
@@ -12,32 +13,32 @@
 	}
 	else
 	{
-		$stmt = $conn->prepare("SELECT * FROM Users WHERE username=?");
-		$stmt->bind_param("s", $username);
+		$stmt = $conn->prepare("SELECT * FROM Users WHERE email=?");
+		$stmt->bind_param("s", $email);
         $stmt->execute();
 
 		$result = $stmt->get_result();
 		if ($row = $result->fetch_assoc())
         {
-            returnWithError("Username already in use");
+            returnWithError("Email already in use");
         }
 
 		else
 		{
-			$stmt2 = $conn->prepare("INSERT INTO Users (username, email, password) VALUES (?,?,?)");
-            $stmt2->bind_param("sss", $username, $email, $password);
+			$stmt2 = $conn->prepare("INSERT INTO Users (firstName, lastName, email, password) VALUES (?,?,?,?)");
+            $stmt2->bind_param("ssss", $firstName, $lastName, $email, $password);
             $stmt2->execute();
             $stmt2->close();
 
-			$stmt3 = $conn->prepare("SELECT * FROM Users WHERE username=?");
-            $stmt3->bind_param("s", $username);
+			$stmt3 = $conn->prepare("SELECT * FROM Users WHERE email=?");
+            $stmt3->bind_param("s", $email);
             $stmt3->execute();
 
 			$result2 = $stmt3->get_result();
 
 			if ($row2 = $result2->fetch_assoc())
             {
-                returnWithInfo($row2['UID'], $row2['username'], $row2['email']);
+                returnWithInfo($row2['userID'], $row2['firstName'], $row2['lastName'], $row2['userLevel']);
             }
 
             else
@@ -65,13 +66,13 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"UID":0,"username":"","email":"","error":"' . $err . '"}';
+		$retValue = '{"userID":0,"firstName":"","lastName":"","userLevel":0,"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo( $id, $username, $email )
+	function returnWithInfo( $id, $firstName, $lastName, $userLevel )
 	{
-		$retValue = '{"UID":' . $id . ',"username":"' . $username . '","email":"' . $email . '","error":""}';
+		$retValue = '{"userID":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","userLevel":' . $userLevel . ',"error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
