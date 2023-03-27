@@ -35,7 +35,7 @@ CREATE TABLE `COP4710`.`RSOs`
 (
     `rsoID` INT NOT NULL AUTO_INCREMENT ,
     `adminID` INT NOT NULL ,
-    `name` VARCHAR(50) NOT NULL DEFAULT '' ,
+    `name` VARCHAR(50) NOT NULL UNIQUE DEFAULT '' ,
     `status` VARCHAR(10) NOT NULL DEFAULT 'inactive',
     `domain` VARCHAR(20) NOT NULL,
     PRIMARY KEY (`rsoID`),
