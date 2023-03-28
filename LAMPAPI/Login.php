@@ -9,14 +9,14 @@
 	}
 	else
 	{
-		$stmt = $conn->prepare("SELECT UID, username, email FROM Users WHERE username=? AND password=?");
-		$stmt->bind_param("ss", $inData["username"], $inData["password"]);
+		$stmt = $conn->prepare("SELECT userID, firstName, lastName, userLevel FROM Users WHERE email=? AND password=?");
+		$stmt->bind_param("ss", $inData["email"], $inData["password"]);
 		$stmt->execute();
 		$result = $stmt->get_result();
 
 		if( $row = $result->fetch_assoc()  )
 		{
-			returnWithInfo($row['UID'], $row['username'], $row['email']);
+			returnWithInfo($row['userID'], $row['firstName'], $row['lastName'], $row['userLevel']);
 		}
 		else
 		{
@@ -40,13 +40,13 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"UID":0,"username":"","email":"","error":"' . $err . '"}';
+		$retValue = '{"userID":0,"firstName":"","lastName":"","userLevel":0,"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo( $id, $username, $email )
+	function returnWithInfo( $userID, $firstName, $lastName, $userLevel )
 	{
-		$retValue = '{"UID":' . $id . ',"username":"' . $username . '","email":"' . $email . '","error":""}';
+		$retValue = '{"userID":' . $userID . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","userLevel":' . $userLevel . ',"error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
