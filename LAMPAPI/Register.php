@@ -4,6 +4,7 @@
 	$firstName = $inData["firstName"];
 	$lastName = $inData["lastName"];
 	$email = $inData["email"];
+	$domain = $inData["domain"];
 	$password = $inData["password"];
 
 	$conn = new mysqli("localhost", "EventApp", "COP4710", "COP4710"); 	
@@ -13,7 +14,7 @@
 	}
 	else
 	{
-		$stmt = $conn->prepare("SELECT * FROM Users WHERE email=?");
+		$stmt = $conn->prepare("SELECT * FROM Users WHERE email=?;");
 		$stmt->bind_param("s", $email);
         $stmt->execute();
 
@@ -25,12 +26,28 @@
 
 		else
 		{
-			$stmt2 = $conn->prepare("INSERT INTO Users (firstName, lastName, email, password) VALUES (?,?,?,?)");
-            $stmt2->bind_param("ssss", $firstName, $lastName, $email, $password);
+			// find university
+			$uniQuery = $conn->prepare("SELECT * FROM Universities WHERE domain=?;");
+			$uniQuery->bind_param("s", $domain);
+			$uniQuery->execute();
+
+			$uniResult = $uniQuery->get_result();
+			if ($uniRow = $uniResult->fetch_assoc())
+			{
+				$uniID = $uniRow['uniID'];
+			}
+			else
+			{
+				returnWithError("University doesn't exist.");
+			}
+			$uniQuery->close();
+			
+			$stmt2 = $conn->prepare("INSERT INTO Users (firstName, lastName, email, password, uniID) VALUES (?,?,?,?,?);");
+            $stmt2->bind_param("sssss", $firstName, $lastName, $email, $password, $uniID);
             $stmt2->execute();
             $stmt2->close();
 
-			$stmt3 = $conn->prepare("SELECT * FROM Users WHERE email=?");
+			$stmt3 = $conn->prepare("SELECT * FROM Users WHERE email=?;");
             $stmt3->bind_param("s", $email);
             $stmt3->execute();
 
