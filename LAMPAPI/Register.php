@@ -35,6 +35,28 @@
 			if ($uniRow = $uniResult->fetch_assoc())
 			{
 				$uniID = $uniRow['uniID'];
+				$stmt2 = $conn->prepare("INSERT INTO Users (firstName, lastName, email, password, uniID) VALUES (?,?,?,?,?);");
+				$stmt2->bind_param("sssss", $firstName, $lastName, $email, $password, $uniID);
+				$stmt2->execute();
+				$stmt2->close();
+
+				$stmt3 = $conn->prepare("SELECT * FROM Users WHERE email=?;");
+				$stmt3->bind_param("s", $email);
+				$stmt3->execute();
+
+				$result2 = $stmt3->get_result();
+
+				if ($row2 = $result2->fetch_assoc())
+				{
+					returnWithInfo($row2['userID'], $row2['firstName'], $row2['lastName'], $row2['userLevel']);
+				}
+
+				else
+				{
+					returnWithError("Error");
+				}
+
+				$stmt3->close();
 			}
 			else
 			{
@@ -42,28 +64,6 @@
 			}
 			$uniQuery->close();
 			
-			$stmt2 = $conn->prepare("INSERT INTO Users (firstName, lastName, email, password, uniID) VALUES (?,?,?,?,?);");
-            $stmt2->bind_param("sssss", $firstName, $lastName, $email, $password, $uniID);
-            $stmt2->execute();
-            $stmt2->close();
-
-			$stmt3 = $conn->prepare("SELECT * FROM Users WHERE email=?;");
-            $stmt3->bind_param("s", $email);
-            $stmt3->execute();
-
-			$result2 = $stmt3->get_result();
-
-			if ($row2 = $result2->fetch_assoc())
-            {
-                returnWithInfo($row2['userID'], $row2['firstName'], $row2['lastName'], $row2['userLevel']);
-            }
-
-            else
-            {
-                returnWithError("Error");
-            }
-
-            $stmt3->close();
 		}
 
 		$stmt->close();

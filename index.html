@@ -24,13 +24,21 @@
 
 	<form id="registerDiv">
 		<span id="inner-title">Register for a new account</span>
-		<label for="registerName">Username:</label>
-		<input type="text" id="registerName" placeholder="Username" /><br />
+
+		<label for="registerFirstName">First Name:</label>
+		<input type="text" id="registerFirstName" placeholder="First" /><br />
+
+		<label for="registerLastName">Last Name:</label>
+		<input type="text" id="registerLastName" placeholder="Last" /><br />
+
 		<label for="registerEmail">Email:</label>
-		<input type="text" id="registerEmail" placeholder="yourname@university.edu" /><br />
+		<input type="text" id="registerEmail" placeholder="Email" /><br />
+
 		<label for="registerPassword">Password:</label>
 		<input type="password" id="registerPassword" placeholder="Password" /><br />
+
 		<button type="button" id="registerButton" class="buttons" onclick="doRegister()"> Register </button>
+		<span id="registerResult"></span>
 	</form>
 
 </body>

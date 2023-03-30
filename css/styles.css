@@ -1,11 +1,9 @@
-body 
-{
+body {
     background-color: #28666E;
     background-image: url(../images/pexels-olena-bohovyk-5345029.jpg);
 }
 
-#title 
-{
+#title {
     font-size: 40px;
     /*width: 100%;*/
     margin: 2% 5%;
@@ -14,8 +12,7 @@ body
     color: #FEDC97;
 }
 
-#loginDiv
-{
+#loginDiv {
     font-size: 30px;
     width: 50%;
     margin: auto;
@@ -23,8 +20,7 @@ body
     background-color: #7C9885;
 }
 
-#registerDiv
-{
+#registerDiv {
     font-size: 30px;
     width: 50%;
     margin: auto;
@@ -32,8 +28,7 @@ body
     background-color: #7C9885;
 }
 
-#loggedInDiv
-{
+#loggedInDiv {
     font-size: 30px;
     width: 70%;
     margin-left: 15%;
@@ -41,8 +36,7 @@ body
     background-color: #b2b2b2;
 }
 
-#accessUIDiv
-{
+#accessUIDiv {
     font-size: 30px;
     width: 70%;
     margin-left: 15%;
@@ -50,8 +44,7 @@ body
     background-color: #b2b2b2;
 }
 
-.buttons
-{
+.buttons {
     font-size: 30px;
     border-radius: 5px;
     width: 50%;
@@ -59,48 +52,29 @@ body
     font-family: 'Ubuntu', sans-serif;
 }
 
-.buttons:hover{
+.buttons:hover {
     background-color: #B5B682;
     opacity: 80%;
 }
 
-#loginName
-{
-	font-size: 24px;
-}
-#loginPassword
-{
-	font-size: 24px;
-}
-#registerName {
-    font-size: 24px;
-}
-#registerEmail
-{
-	font-size: 24px;
-}
-#registerPassword
-{
-	font-size: 24px;
+#searchText {
+    font-size: 30px;
 }
 
-#searchText
-{
-	font-size: 30px;
-}
-#colorText
-{
-	font-size: 30px;
+#colorText {
+    font-size: 30px;
 }
 
-input[type="text"],input[type="password"]{
-    
+input[type="text"],
+input[type="password"] {
+
     width: 100%;
     margin-bottom: 2%;
     font-family: 'Ubuntu', sans-serif;
+    font-size: 24px;
 }
 
-#inner-title{
+#inner-title {
     display: inline-block;
     font-size: 0.8em;
     width: 90%;
@@ -111,7 +85,8 @@ input[type="text"],input[type="password"]{
     color: #033F63;
 }
 
-#loginResult{
+#loginResult,
+#registerResult {
     display: inline-block;
     font-size: 0.8em;
     width: 90%;
@@ -122,19 +97,19 @@ input[type="text"],input[type="password"]{
     color: #033F63;
 }
 
-#userName{
+#userName {
     display: inline-block;
     width: 80%;
     margin-left: 10%;
     text-align: center;
 }
 
-#logoutButton{
+#logoutButton {
     width: 20%;
     margin-left: 40%;
 }
 
-select{
+select {
     width: 30%;
     margin-left: 35%;
     margin-top: 2%;
@@ -142,11 +117,11 @@ select{
     font-family: 'Ubuntu', sans-serif;
 }
 
-#colorSearchResult{
+#colorSearchResult {
     display: none;
 }
 
-#colorAddResult{
+#colorAddResult {
     display: inline-block;
     font-size: 0.8em;
     width: 90%;
@@ -158,8 +133,7 @@ select{
     color: #033F63;
 }
 
-label
-{
+label {
     font-size: 20px;
     font-family: 'Ubuntu', sans-serif;
 }

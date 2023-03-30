@@ -56,11 +56,16 @@ function doLogin() {
 }
 
 function doRegister() {
-	let username = document.getElementById("registerName").value;
+	let firstName = document.getElementById("registerFirstName").value;
+	let lastName = document.getElementById("registerLastName").value;
 	let email = document.getElementById("registerEmail").value;
 	let password = document.getElementById("registerPassword").value;
 
-	let tmp = { username: username, email: email, password: password };
+	// extract domain
+	let tokens = email.split("@").join(".").split(".");
+	let domain = tokens[tokens.length - 2] + "." + tokens[tokens.length - 1];
+
+	let tmp = { firstName: firstName, lastName: lastName, email: email, domain: domain, password: password };
 	let jsonPayload = JSON.stringify(tmp);
 
 	let url = urlBase + '/Register.' + extension;
@@ -76,25 +81,27 @@ function doRegister() {
 				userId = jsonObject.userID;
 
 				if (userId < 1) {
-					document.getElementById("loginResult").innerHTML = "Username already in use";
+					document.getElementById("registerResult").innerHTML = jsonObject.error;
 					return;
 				}
 
-				username = jsonObject.username;
-				email = jsonObject.email;
+				firstName = jsonObject.firstName;
+				lastName = jsonObject.lastName;
+				userLevel = jsonObject.userLevel;
 
-				saveCookie();
+				document.getElementById("registerResult").innerHTML = "Register successful!";
 
-				window.location.href = "color.html";
+
 			}
 		};
 		xhr.send(jsonPayload);
 	}
 	catch (err) {
-		document.getElementById("loginResult").innerHTML = err.message;
+		document.getElementById("registerResult").innerHTML = err.message;
 	}
 
 }
+
 function saveCookie() {
 	let minutes = 20;
 	let date = new Date();
