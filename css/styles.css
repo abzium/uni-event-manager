@@ -34,6 +34,7 @@ body {
     margin-left: 15%;
     padding: 25px;
     background-color: #b2b2b2;
+    display: inline-block;
 }
 
 #accessUIDiv {
@@ -104,10 +105,7 @@ input[type="password"] {
     text-align: center;
 }
 
-#logoutButton {
-    width: 20%;
-    margin-left: 40%;
-}
+
 
 select {
     width: 30%;

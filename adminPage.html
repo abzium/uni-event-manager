@@ -1,0 +1,114 @@
+<html>
+
+<head>
+    <title>Admin Page</title>
+    <script type="text/javascript" src="js/code.js"></script>
+    <link href="css/eventpages.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+
+    <script type="text/javascript">
+        /*
+        document.addEventListener('DOMContentLoaded', function () {
+            readCookie();
+            if (userLevel < 1) {
+                window.location.href = "index.html";
+            }
+        }, false);
+        */
+    </script>
+
+</head>
+
+<body>
+
+    <div id="loggedInDiv">
+        <span id="userName">Logged in as: asdfsdf</span><br />
+        <div class="btn-group">
+            <button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+            <button type="button" id="eventButton" class="buttons" onclick=""> Events </button>
+            <button type="button" id="rsoButton" class="buttons" onclick=""> RSOs </button>
+
+            <button type="button" id="createButton" class="buttons"
+                onclick="document.getElementById('id01').style.display='block'"> Create...
+            </button>
+
+            <div id="id01" class="modal">
+
+                <div class="modal-content animate">
+
+                    <div class="container">
+                        <label for="createOption">Select an option:</label>
+                        <select name="createOption" id="createOption" onchange="changeAdminForm();">
+                            <option value="createRSO">Create RSO</option>
+                            <option value="createPriEv">Create Private Event</option>
+                            <option value="createPubEv">Create Public Event</option>
+                            <option value="createRSOEv">Create RSO Event</option>
+                        </select> <br />
+
+                        <!-- Create RSO: Name -->
+                        <div id="rsoInfo" style="display: none;">
+                            <label for="RSOname" class="rso"><b>RSO Name</b></label>
+                            <input type="text" placeholder="Enter RSO Name" name="RSOname" id="rsoName" required>
+                        </div>
+
+                        <!-- Create Public/Private/RSO Event: Name, Category, Description, Contact Phone, Contact Email -->
+                        <div id="eventInfo" style="display: none;">
+                            <label for="eventName"><b>Event Name</b></label>
+                            <input type="text" placeholder="Enter Event Name" name="eventName" id="eventName" required>
+                            <label for="catName"><b>Category Name</b></label>
+                            <input type="text" placeholder="Enter Category Name" name="catName" id="catName" required>
+                            <label for="descr"><b>Description</b></label>
+                            <input type="text" placeholder="Enter Description" name="descr" id="descr" required>
+                            <label for="phone"><b>Contact Phone</b></label>
+                            <input type="text" placeholder="Enter Contact Phone" name="phone" id="phone" required>
+                            <label for="email"><b>Contact Email</b></label>
+                            <input type="text" placeholder="Enter Email" name="email" id="email" required>
+                            <label for="time"><b>Time</b></label>
+                            <input type="datetime-local" name="time" id="time" required>
+
+                        </div>
+
+                        <div id="rsoEvInfo" style="display: none;">
+                            <label for="rsoID"><b>RSO ID</b></label>
+                            <input type="text" placeholder="Enter RSO ID" name="rsoID" id="rsoID" required>
+                        </div>
+
+
+                        <!-- Create RSO Event: Name, Category, Description, Contact Phone, Contact Email, RSO -->
+                        <div id="sbtndiv" style="display: none;">
+                            <button class="buttons" type="submit" id="submitButton"
+                                onclick="createRSO();">Create</button>
+                        </div>
+
+                        <div id="createResult"></div>
+
+                    </div>
+
+                    <div class=" container" style="background-color:#7C9885">
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'"
+                            class="cancelbtn buttons">Cancel</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="accessUIDiv">
+        <br />
+
+        <input type="text" id="searchText" placeholder="Color To Search For" />
+        <button type="button" id="searchColorButton" class="buttons" onclick="searchColor();"> Search Color
+        </button><br />
+        <span id="colorSearchResult"></span>
+        <p id="colorList">
+        </p><br /><br />
+
+        <input type="text" id="colorText" placeholder="Color To Add">
+        <button type="button" id="addColorButton" class="buttons" onclick="addColor();"> Add Color </button><br />
+        <span id="colorAddResult"></span>
+    </div>
+
+</body>
+
+</html>

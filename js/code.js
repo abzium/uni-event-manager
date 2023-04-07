@@ -5,6 +5,7 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 let userLevel = 0;
+let userDomain = "";
 
 function doLogin() {
 	userId = 0;
@@ -41,10 +42,18 @@ function doLogin() {
 				firstName = jsonObject.firstName;
 				lastName = jsonObject.lastName;
 				userLevel = jsonObject.userLevel;
+				// extract domain
+				let tokens = email.split("@").join(".").split(".");
+				userDomain = tokens[tokens.length - 2] + "." + tokens[tokens.length - 1];
 
 				saveCookie();
 
-				window.location.href = "color.html";
+				if (userLevel == 1) {
+					window.location.href = "adminPage.html";
+				}
+				else {
+					window.location.href = "color.html";
+				}
 			}
 		};
 		xhr.send(jsonPayload);
@@ -103,10 +112,10 @@ function doRegister() {
 }
 
 function saveCookie() {
-	let minutes = 20;
+	let minutes = 40;
 	let date = new Date();
 	date.setTime(date.getTime() + (minutes * 60 * 1000));
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ",userLevel=" + userLevel + ";expires=" + date.toGMTString();
+	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ",userLevel=" + userLevel + ",userDomain=" + userDomain + ";expires=" + date.toGMTString();
 }
 
 function readCookie() {
@@ -209,4 +218,112 @@ function searchColor() {
 		document.getElementById("colorSearchResult").innerHTML = err.message;
 	}
 
+}
+
+function changeAdminForm() {
+	let value = document.getElementById('createOption').value;
+	let rsoForm = document.getElementById('rsoInfo');
+	let eventForm = document.getElementById('eventInfo');
+	let rsoEvForm = document.getElementById('rsoEvInfo');
+	let submit = document.getElementById('submitButton');
+	document.getElementById('sbtndiv').style.display = "block";
+
+	if (value == "createRSO") {
+		rsoForm.style.display = "block";
+		eventForm.style.display = "none";
+		rsoEvForm.style.display = "none";
+		submit.setAttribute("onclick", "createRSO();")
+
+	} else if (value == "createPriEv") {
+		rsoForm.style.display = "none";
+		eventForm.style.display = "block";
+		rsoEvForm.style.display = "none";
+		submit.setAttribute("onclick", "createPrivateEvent();")
+
+	} else if (value == "createPubEv") {
+		rsoForm.style.display = "none";
+		eventForm.style.display = "block";
+		rsoEvForm.style.display = "none";
+		submit.setAttribute("onclick", "createPublicEvent();")
+
+	} else {
+		// create RSO event
+		rsoForm.style.display = "none";
+		eventForm.style.display = "block";
+		rsoEvForm.style.display = "block";
+		submit.setAttribute("onclick", "createRSOEvent();")
+	}
+}
+
+function createRSO() {
+	document.getElementById("createResult").innerHTML = "";
+	let rsoName = document.getElementById("rsoName").value;
+
+	let tmp = { adminID: userId, name: rsoName, domain: userDomain };
+	let jsonPayload = JSON.stringify(tmp);
+
+	let url = urlBase + '/CreateRSO.' + extension;
+
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("createResult").innerHTML = "RSO has been added";
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch (err) {
+		document.getElementById("createResult").innerHTML = err.message;
+	}
+}
+
+function createPrivateEvent() {
+	document.getElementById("createResult").innerHTML = "";
+
+	let eventName = document.getElementById("eventName").value;
+	let catName = document.getElementById("catName").value;
+	let descr = document.getElementById("descr").value;
+	let phone = document.getElementById("phone").value;
+	let email = document.getElementById("email").value;
+
+
+	let tmp = {
+		name: eventName,
+		category: catName,
+		description: descr,
+		contactPhone: phone,
+		contactEmail: email,
+		timestamp: 0,
+		adminID: userId,
+		uniID: 3
+	};
+	let jsonPayload = JSON.stringify(tmp);
+
+	let url = urlBase + '/CreateRSO.' + extension;
+
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("createResult").innerHTML = "RSO has been added";
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch (err) {
+		document.getElementById("createResult").innerHTML = err.message;
+	}
+}
+
+function createPublicEvent() {
+	console.log("cpub");
+}
+
+function createRSOEvent() {
+	console.log("crev");
 }
