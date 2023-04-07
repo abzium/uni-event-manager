@@ -1,4 +1,10 @@
 <?php
+	// Incoming: name, category, description, contactPhone, contactEmail, timestamp, adminID
+	// Inserts into events table,
+	// gets the eventID of the event just inserted,
+	// gets the uniID by searching for it with adminID,
+	// then inserts into private events relation table 
+	// Outgoing: err
 	$inData = getRequestInfo();
 	
 	$name = $inData["name"];
@@ -8,7 +14,6 @@
 	$contactEmail = $inData["contactEmail"];
 	$timestamp = $inData["timestamp"];
 	$adminID = $inData["adminID"];
-    $uniID = $inData["uniID"];
 
 	$conn = new mysqli("localhost", "EventApp", "COP4710", "COP4710");
 	if ($conn->connect_error) 
@@ -17,6 +22,7 @@
 	} 
 	else
 	{
+		// add to events
 		$stmt = $conn->prepare("INSERT INTO Events (name, category, description, contactPhone, contactEmail, timestamp) VALUES (?, ?, ?, ?, ?, ?);");
 		$stmt->bind_param("ssssss", $name, $category, $description, $contactPhone, $contactEmail, $timestamp );
 		$stmt->execute();
@@ -29,6 +35,15 @@
 		$row = $result->fetch_assoc();
 		$eventID = $row['eventID'];
 		$stmt2->close();
+
+		// get uniID
+		$uniStmt = $conn->prepare("SELECT uniID FROM Users WHERE userID = ?");
+		$uniStmt->bind_param("i", $adminID);
+		$uniStmt->execute();
+		$uniResult = $uniStmt->get_result();
+		$uniRow = $uniResult->fetch_assoc();
+		$uniID = $uniRow['uniID'];
+		$uniStmt->close();
 
 		// add to private events
 		$stmt3 = $conn->prepare("INSERT INTO Private_Events (eventID, adminID, uniID) VALUES (?, ?, ?);");
