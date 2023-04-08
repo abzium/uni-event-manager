@@ -43,7 +43,7 @@ function doLogin() {
 				lastName = jsonObject.lastName;
 				userLevel = jsonObject.userLevel;
 				// extract domain
-				let tokens = email.split("@").join(".").split(".");
+				let tokens = login.split("@").join(".").split(".");
 				userDomain = tokens[tokens.length - 2] + "." + tokens[tokens.length - 1];
 
 				saveCookie();
@@ -136,6 +136,9 @@ function readCookie() {
 		}
 		else if (tokens[0] == "userLevel") {
 			userLevel = parseInt(tokens[1].trim());
+		}
+		else if (tokens[0] == "userDomain") {
+			userDomain = parseInt(tokens[1].trim());
 		}
 	}
 
